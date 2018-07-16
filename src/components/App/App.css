@@ -1,0 +1,13 @@
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-family: Arial, sans-serif;
+}
+
+.App-container {
+  margin: 24px 0;
+  border: 1px solid darkgray;
+  min-height: 100px;
+}
