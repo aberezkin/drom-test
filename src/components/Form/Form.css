@@ -36,6 +36,20 @@
   border: 1px solid transparent;
 }
 
+.Form-root input[type=text]::placeholder {
+  color: #797979;
+  font-size: 17px;
+}
+
+.Form-root input[type=text].invalid {
+  color: #df2d37;
+  background-color: #fae5e8;
+}
+
+.Form-root input[type=text].invalid::placeholder {
+  color: #df2d37;
+}
+
 .Form-root input[type=text]:focus {
   outline: none;
   background-color: #ffffff;
@@ -69,4 +83,10 @@
 .Form-agreement {
   font-size: 12px;
   color: #9c9c9c;
+}
+
+.Form-error {
+  color: #df2d37;
+  font-size: 12px;
+  margin: 0 0 16px;
 }

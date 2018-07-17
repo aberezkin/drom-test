@@ -5,11 +5,6 @@ body {
   min-width: 580px;
 }
 
-::placeholder {
-  color: #797979;
-  font-size: 17px;
-}
-
 button {
   cursor: pointer;
 }

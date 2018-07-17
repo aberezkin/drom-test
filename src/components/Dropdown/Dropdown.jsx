@@ -14,7 +14,8 @@ class Dropdown extends Component {
   handleClickOutside = () => {
     this.setState({
       isOpen: false,
-    })
+    });
+    this.props.onBlur();
   };
 
   toggleOptions = () => {
@@ -35,13 +36,13 @@ class Dropdown extends Component {
   };
 
   render() {
-    const { options, placeholder, value } = this.props;
+    const { options, placeholder, value, headerClass } = this.props;
     const { isOpen } = this.state;
 
     return (
       <div className="Dropdown-wrapper">
         <div
-          className={cx('Dropdown-header', { open: this.state.isOpen })}
+          className={cx('Dropdown-header', headerClass, { open: this.state.isOpen })}
           onClick={this.toggleOptions}
         >
           <div className="Dropdщwn-value">
@@ -78,7 +79,14 @@ Dropdown.propTypes = {
   placeholder: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   value: PropTypes.any,
+  headerClass: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func
+};
+
+Dropdown.defaultProps = {
+  onBlur: () => {},
+  headerClass: '',
 };
 
 export default onClickOutside(Dropdown);
