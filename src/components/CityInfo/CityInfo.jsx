@@ -28,7 +28,7 @@ class CityInfo extends Component {
         { phones.length > 0  && <span>
           {
             intersperse(
-              phones.map((phone) => <span key={phone} className="CityInfo-phone">{formatPhone(phone)}</span>),
+              phones.map((phone) => <a key={phone} href={`tel:${formatPhone(phone)}`}>{formatPhone(phone)}</a>),
               ', '
             )
           }
