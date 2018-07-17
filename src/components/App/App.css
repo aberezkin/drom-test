@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  text-align: left;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -8,6 +8,7 @@
 
 .App-container {
   margin: 24px 0;
+  padding: 16px 24px;
   border: 1px solid darkgray;
   min-height: 100px;
 }

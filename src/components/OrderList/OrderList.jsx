@@ -6,7 +6,7 @@ class OrderList extends Component {
   render() {
     return (
       <div className="OrderList-root">
-        <h1>Orders page</h1>
+        <h3>Список записей</h3>
       </div>
     )
   }

@@ -1,0 +1,68 @@
+.Dropdown-wrapper {
+  position: relative;
+}
+
+.Dropdown-header {
+  position: relative;
+  background-color: #e8e8e8;
+  padding: 16px 8px 16px 16px;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: 20px;
+  transition:
+    background-color .5s ease,
+    box-shadow .3s ease;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.Dropdown-header.open {
+  box-shadow: -2px 5px 8px 0 rgba(0,0,0,.2);
+  background-color: #fff;
+  border: 1px solid #c5c5c5;
+}
+
+.Dropdown-placeholder {
+  color: #555555;
+}
+
+.Dropdown-arrow {
+  margin: 5px 4px;
+  vertical-align: middle;
+  height: 10px;
+  width: auto;
+  transition: transform 0.15s ease;
+}
+
+.Dropdown-header.open .Dropdown-arrow {
+  transform: rotateZ(180deg);
+}
+
+.Dropdown-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 8px 0;
+  border: 1px solid #c5c5c5;
+  border-radius: 3px;
+  box-shadow: -2px 5px 16px 0 rgba(0,0,0,.2);
+}
+
+.Dropdown-list-item {
+  padding: 12px;
+  background-color: #ffffff;
+  transition: background-color .3s ease;
+  cursor: pointer;
+}
+
+.Dropdown-list-item.active {
+  background-color: #f5f5f5;
+}
+
+.Dropdown-list-item:hover {
+  background-color: #f0f0f0;
+}
+
