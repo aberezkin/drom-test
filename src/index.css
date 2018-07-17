@@ -4,3 +4,20 @@ body {
   font-family: sans-serif;
   min-width: 580px;
 }
+
+::placeholder {
+  color: #797979;
+  font-size: 17px;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;;
+}
+
+a:hover {
+  text-decoration: underline;
+}

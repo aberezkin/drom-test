@@ -56,6 +56,32 @@ class Form extends Component {
             onChange={(value) => this.updateField('city', value)}
           />
           { <CityInfo {...cityInfo} /> }
+          <div className="Form-datetime">
+            <div>
+              <Dropdown
+                placeholder="Дата"
+              />
+            </div>
+            <div>
+              <Dropdown
+                placeholder="Время"
+              />
+            </div>
+          </div>
+          <div className="Form-input">
+            <input type="text" placeholder="+7 (___) ___-__-__"/>
+          </div>
+          <div className="Form-input">
+            <input type="text" placeholder="Ваше имя"/>
+          </div>
+          <div className="Form-button">
+            <button>Записаться</button>
+          </div>
+          <p className="Form-agreement">
+            Нажимая "Записаться", я выражаю свое согласие с обработкой
+            моих персональных данных в соответсвии с принятой <a href="#">политикой конфиденциальности</a> и
+            принимаю <a href="#">пользовательское соглажение</a>
+          </p>
         </div>
       </div>
     )
