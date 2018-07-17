@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { CHANGE_CITY, RECEIVE_CITIES, REQUEST_CITIES } from "./actions";
+import { CHANGE_CITY, RECEIVE_CITIES, RECEIVE_TIMETABLE, REQUEST_CITIES, REQUEST_TIMETABLE } from "./actions";
 
 const citiesDefault = {
   chosen: null,
@@ -21,7 +21,6 @@ const cities = (state = citiesDefault, { type, ...payload }) => {
       };
     case RECEIVE_CITIES:
       return {
-        chosen: payload.cities[0].id,
         isFetching: false,
         items: payload.cities,
       };
@@ -30,8 +29,34 @@ const cities = (state = citiesDefault, { type, ...payload }) => {
   }
 };
 
+const timetableDefault = {
+  isFetching: false,
+  items: { }
+};
+
+const timetable = (state = timetableDefault, { type, ...payload }) => {
+  switch (type) {
+    case REQUEST_TIMETABLE:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case RECEIVE_TIMETABLE:
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [payload.city]: payload.data,
+        },
+      };
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
-  cities
+  cities,
+  timetable,
 });
 
 export default rootReducer;
