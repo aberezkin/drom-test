@@ -1,38 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Dropdown from "../Dropdown";
 import CityInfo from '../CityInfo';
 
 import './Form.css';
-
-const cityOptions = [
-  {
-    id: "5b3480ee3200009f28d1e421",
-    name: "Владивосток",
-    address: "ул. Первая 1, ст. 3",
-    phones: [
-      "79991233232",
-      "79996667676"
-    ],
-    price: 12000
-  },
-  {
-    id: "5b348105320000781bd1e422",
-    name: "Приморск",
-    address: "ул. Малая 9",
-    phones: [
-      "79990010101"
-    ],
-    price: 7500
-  },
-  {
-    id: "5b3481173200005700d1e423",
-    name: "Чекалин",
-    address: "ул. Большая 4, к. 20",
-    phones: [ ],
-    price: 4200
-  }
-];
 
 const validators = {
   date: (value) => {
@@ -61,7 +33,6 @@ const validators = {
 
 class Form extends Component {
   state = {
-    city: "5b3480ee3200009f28d1e421",
     date: null,
     time: null,
     phone: '',
@@ -120,7 +91,8 @@ class Form extends Component {
   };
 
   render() {
-    const cityInfo = cityOptions.find((city) => city.id === this.state.city);
+    const { cities, city, onCityChange } = this.props;
+    const cityInfo = cities.find((c) => c.id === city);
 
     return (
       <div className="Form-root">
@@ -128,11 +100,12 @@ class Form extends Component {
         <div>
           <Dropdown
             placeholder="Город"
-            options={cityOptions.map(city => ({ value: city.id, label: city.name }))}
-            value={this.state.city}
-            onChange={(value) => this.updateCity(value)}
+            headerClass="Form-city"
+            options={cities.map(city => ({ value: city.id, label: city.name }))}
+            value={city}
+            onChange={onCityChange}
           />
-          { <CityInfo {...cityInfo} /> }
+          { city && <CityInfo {...cityInfo} /> }
           <div className="Form-datetime">
             <div>
               <Dropdown
@@ -200,5 +173,9 @@ class Form extends Component {
     )
   }
 }
+
+Form.propTypes = {
+  cities: PropTypes.array.isRequired,
+};
 
 export default Form;

@@ -2,6 +2,10 @@
   width: 450px;
 }
 
+.Form-city {
+  margin-bottom: 16px;
+}
+
 .Form-datetime {
   display: flex;
   flex-direction: row;
@@ -51,6 +55,7 @@
 }
 
 .Form-root input[type=text]:focus {
+  color: #000;
   outline: none;
   background-color: #ffffff;
   border-color: #c5c5c5;
