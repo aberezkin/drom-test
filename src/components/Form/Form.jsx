@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Dropdown from "../Dropdown";
+import CityInfo from '../CityInfo';
 
 import './Form.css';
 
-const city_options = [
+const cityOptions = [
   {
     id: "5b3480ee3200009f28d1e421",
     name: "Владивосток",
@@ -34,7 +35,7 @@ const city_options = [
 
 class Form extends Component {
   state = {
-    city: null,
+    city: "5b3480ee3200009f28d1e421",
   };
 
   updateField = (field, value) => {
@@ -42,16 +43,19 @@ class Form extends Component {
   };
 
   render() {
+    const cityInfo = cityOptions.find((city) => city.id === this.state.city);
+
     return (
       <div className="Form-root">
         <h3>Онлайн запись</h3>
         <div>
           <Dropdown
             placeholder="Город"
-            options={city_options.map(city => ({ value: city.id, label: city.name }))}
+            options={cityOptions.map(city => ({ value: city.id, label: city.name }))}
             value={this.state.city}
             onChange={(value) => this.updateField('city', value)}
           />
+          { <CityInfo {...cityInfo} /> }
         </div>
       </div>
     )
