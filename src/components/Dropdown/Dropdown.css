@@ -2,6 +2,11 @@
   position: relative;
 }
 
+.Dropdown-wrapper.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 .Dropdown-header {
   position: relative;
   background-color: #e8e8e8;
@@ -17,12 +22,28 @@
   flex-direction: row;
   justify-content: space-between;
   border: 1px solid transparent;
+  text-overflow: ellipsis;
+}
+
+.Dropdown-header.invalid, .Dropdown-header.invalid .Dropdown-placeholder{
+  color: #df2d37;
+  background-color: #fae5e8;
+}
+
+.invalid {
+  color: #df2d37;
+  background-color: #fae5e8;
 }
 
 .Dropdown-header.open {
   box-shadow: -2px 5px 8px 0 rgba(0,0,0,.2);
   background-color: #fff;
   border-color: #c5c5c5;
+}
+
+.Dropdown-header.open .Dropdown-placeholder {
+  background-color: #fff;
+  color: #000000;
 }
 
 .Dropdown-placeholder {

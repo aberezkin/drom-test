@@ -2,6 +2,11 @@
   width: 450px;
 }
 
+.Form-inputs-wrapper.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 .Form-city {
   margin-bottom: 16px;
 }
@@ -77,7 +82,16 @@
   padding: 16px 24px;
   border-radius: 52px;
   background: #db001b;
+  transition: box-shadow 0.3s ease;
   box-shadow: 0 3px 12px 0 rgba(110, 0, 22, 0.5);
+}
+
+.Form-button button:hover {
+  box-shadow: 0 5px 12px 0 rgba(110, 0, 22, 0.5);
+}
+
+.Form-button button:focus {
+  outline: none;
 }
 
 .Form-button button:disabled {

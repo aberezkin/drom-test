@@ -31,12 +31,29 @@ const validators = {
   }
 };
 
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+const formatDate = (dateString) => {
+  const year = Number(dateString.slice(0, 4));
+  const month = Number(dateString.slice(5, 7));
+  const day = Number(dateString.slice(8, 10));
+
+  const date = new Date(year, month - 1, day);
+
+  const dayStr = date.toLocaleDateString('ru-RU', { day: 'numeric' });
+  const monthStr = capitalize(date.toLocaleDateString('ru-RU', { month: 'long'}));
+  const weekdayStr = capitalize(date.toLocaleDateString('ru-RU', { weekday: 'long' }));
+
+  return `${dayStr} ${monthStr}, ${weekdayStr}`;
+};
+
 class Form extends Component {
   state = {
     date: null,
     time: null,
     phone: '',
     value: '',
+    name: '',
     validation: {
       date: {
         touched: false,
@@ -57,23 +74,19 @@ class Form extends Component {
     },
   };
 
-  updateCity = (city) => {
-    this.setState({ city });
-  };
-
   updateField = (field, value) => {
     this.setState({
       [field]: value
-    })
+    });
   };
 
-  validate = (field) => {
+  validate = (field, value) => {
     this.setState({
       validation: {
         ...this.state.validation,
         [field]: {
           touched: true,
-          errors: validators[field](this.state[field]),
+          errors: validators[field](value),
         }
       },
     })
@@ -86,24 +99,42 @@ class Form extends Component {
 
   isFormInvalid = () => {
     return Object.values(this.state.validation)
-      .map((data) => !data.touched || data.errors.length === 0)
-      .reduce((acc, el) => acc && el)
+      .map((data) => !data.touched || data.errors.length > 0)
+      .reduce((acc, el) => acc || el)
+  };
+
+  updateDate = (value) => {
+    this.setState({
+      date: value,
+    });
+    this.updateTime(null);
+    this.validate('date', value);
+  };
+
+  updateTime = (value) => {
+    this.setState({
+      time: value,
+    });
+    this.validate('time', value);
   };
 
   render() {
-    const { cities, city, onCityChange } = this.props;
+    const { cities, city, onCityChange, timetable, areCitiesFetching } = this.props;
     const cityInfo = cities.find((c) => c.id === city);
+    const times = ((timetable.find((day) => day.date === this.state.date) || {}).times || [])
+      .map(({ date, begin, end }) => ({ value: date, label: `${begin}-${end}`}));
 
     return (
       <div className="Form-root">
         <h3>Онлайн запись</h3>
-        <div>
+        <div className="Form-inputs-wrapper">
           <Dropdown
             placeholder="Город"
             headerClass="Form-city"
             options={cities.map(city => ({ value: city.id, label: city.name }))}
             value={city}
             onChange={onCityChange}
+            disabled={areCitiesFetching}
           />
           { city && <CityInfo {...cityInfo} /> }
           <div className="Form-datetime">
@@ -111,12 +142,22 @@ class Form extends Component {
               <Dropdown
                 headerClass={cx({ invalid: this.isFieldInvalid('date') })}
                 placeholder="Дата"
+                options={timetable.map(date => ({ value: date.date, label: formatDate(date.date) }))}
+                value={this.state.date}
+                onChange={(value) => this.updateDate(value)}
+                onBlur={() => this.validate('date', this.state.date)}
+                disabled={timetable.length === 0}
               />
             </div>
             <div>
               <Dropdown
                 headerClass={cx({ invalid: this.isFieldInvalid('time') })}
                 placeholder="Время"
+                options={times}
+                value={this.state.time}
+                onChange={(value) => this.updateTime(value)}
+                onBlur={() => this.validate('time', this.state.time)}
+                disabled={times.length === 0}
               />
             </div>
           </div>
@@ -137,7 +178,7 @@ class Form extends Component {
               placeholder="+7 (___) ___-__-__"
               value={this.state.phone}
               onChange={(e) => this.updateField('phone', e.target.value)}
-              onBlur={() => this.validate('phone')}
+              onBlur={() => this.validate('phone', this.state.phone)}
             />
           </div>
           {this.state.validation.phone.errors.map((err, i) =>
@@ -152,7 +193,7 @@ class Form extends Component {
               placeholder="Ваше имя"
               value={this.state.name}
               onChange={(e) => this.updateField('name', e.target.value)}
-              onBlur={() => this.validate('name')}
+              onBlur={() => this.validate('name', this.state.name)}
             />
           </div>
           {this.state.validation.name.errors.map((err, i) =>

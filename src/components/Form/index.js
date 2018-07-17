@@ -5,7 +5,8 @@ import { changeCity, fetchTimetableIfNeeded } from "../../state/actions";
 const mapStateToProps = (state) => ({
   cities: state.cities.items,
   city: state.cities.chosen,
-  timetable: state.timetable.items[state.cities.chosen]
+  timetable: state.timetable.items[state.cities.chosen] || [],
+  areCitiesFetching: state.cities.isFetching,
 });
 
 const mapDispatchToProps = (dispatch) => ({

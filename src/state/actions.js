@@ -41,11 +41,23 @@ const requestTimetable = (city) => ({
 });
 
 export const RECEIVE_TIMETABLE = 'RECEIVE_TIMETABLE';
-const receiveTimetable = (city, data) => ({
-  type: RECEIVE_TIMETABLE,
-  city,
-  data,
-});
+const receiveTimetable = (city, rawData) => {
+  const data = Object.keys(rawData).map((date) => {
+    const dateInfo = rawData[date];
+    return {
+      date,
+      times: Object.keys(dateInfo)
+        .map((time) => dateInfo[time])
+        .filter((timeInfo) => !timeInfo.is_not_free),
+    }
+  }).filter((item) => item.times.length > 0);
+
+  return {
+    type: RECEIVE_TIMETABLE,
+    city,
+    data,
+  }
+};
 
 const fetchTimetable = (city) => (dispatch) => {
   dispatch(requestTimetable(city));
