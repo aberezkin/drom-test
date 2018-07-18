@@ -50,7 +50,7 @@ const timetable = (state = timetableDefault, { type, ...payload }) => {
       };
     case RECEIVE_TIMETABLE:
       return {
-        ...state,
+        isFetching: false,
         items: {
           ...state.items,
           [payload.city]: payload.data,
