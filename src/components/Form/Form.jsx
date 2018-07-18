@@ -52,6 +52,7 @@ const defaultState = {
   time: null,
   phone: '',
   name: '',
+  success: false,
   validation: {
     date: {
       touched: false,
@@ -83,6 +84,7 @@ class Form extends Component {
 
   validate = (field, value) => {
     this.setState({
+      success: false,
       validation: {
         ...this.state.validation,
         [field]: {
@@ -138,17 +140,19 @@ class Form extends Component {
   };
 
   sendOrder = () => {
-    const { validation, date, ...data } = this.state;
+    const { validation, date, success, ...data } = this.state;
     const city = this.props.cities.find((c) => c.id === this.props.city);
     this.props.onOrder({
       city: city.name,
       address: city.address,
       ...data,
-    }).then(() => this.clearForm());
+    }).then(() => this.clearForm())
+      .then(() => this.setState({ success: true }));
   };
 
   render() {
     const { cities, city, timetable, areCitiesFetching, disabled } = this.props;
+    const { success } = this.state;
     const cityInfo = cities.find((c) => c.id === city);
     const times = ((timetable.find((day) => day.date === this.state.date) || {}).times || [])
       .map(({ date, begin, end }) => ({ value: date, label: `${begin}-${end}`}));
@@ -237,6 +241,9 @@ class Form extends Component {
               Записаться
             </button>
           </div>
+          { success && <p className="Form-success">
+            Ваш запись отправленна, спасибо за то что пользуетесь нашими сервисами.
+          </p>}
           <p className="Form-agreement">
             Нажимая "Записаться", я выражаю свое согласие с обработкой
             моих персональных данных в соответсвии с принятой <a href="#">политикой конфиденциальности</a> и
