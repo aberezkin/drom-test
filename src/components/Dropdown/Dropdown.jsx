@@ -32,7 +32,8 @@ class Dropdown extends Component {
 
   handleOptionClick = (value) => {
     this.closeOptions();
-    this.props.onChange(value);
+    if (value !== this.props.value)
+      this.props.onChange(value);
   };
 
   render() {
