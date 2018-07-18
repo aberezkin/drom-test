@@ -1,3 +1,15 @@
 .OrderList-root {
-  width: 800px;
+  width: 1000px;
+}
+
+.OrderList-table {
+  width: 100%;
+}
+
+.OrderList-table, .OrderList-table tr, .OrderList-table td {
+  border: 1px solid slategray;
+}
+
+.OrderList-button {
+  text-align: center;
 }

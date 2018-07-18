@@ -89,7 +89,7 @@ const orders = (state = ordersDefault, { type, ...payload }) => {
     case REMOVE_ORDER:
       return {
         ...state,
-        items: state.filter((order) => order.id === payload.id),
+        items: state.items.filter((order) => order.id === payload.id),
       };
     default:
       return state;
