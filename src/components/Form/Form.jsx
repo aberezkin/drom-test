@@ -6,31 +6,6 @@ import CityInfo from '../CityInfo';
 
 import './Form.css';
 
-const validators = {
-  date: (value) => {
-    const res = [];
-    if (!value) res.push('Пожалуйста, выберите дату');
-    return res;
-  },
-  time: (value) => {
-    const res = [];
-    if (!value) res.push('Пожалуйста, выберите время');
-    return res;
-  },
-  phone: (value) => {
-    const res = [];
-    if (!value || value.length === 0)
-      res.push('Пожалуйста, введите корректный телефон, иначе наши специалисты не смогут связаться с вами');
-    return res;
-  },
-  name: (value) => {
-    const res = [];
-    if (!value || value.length === 0)
-      res.push('Пожалуйста, укажите имя')
-    return res;
-  }
-};
-
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 const formatDate = (dateString) => {
@@ -45,6 +20,33 @@ const formatDate = (dateString) => {
   const weekdayStr = capitalize(date.toLocaleDateString('ru-RU', { weekday: 'long' }));
 
   return `${dayStr} ${monthStr}, ${weekdayStr}`;
+};
+
+const validators = {
+  date: (value) => {
+    const res = [];
+    if (!value) res.push('Пожалуйста, выберите дату');
+    return res;
+  },
+  time: (value) => {
+    const res = [];
+    if (!value) res.push('Пожалуйста, выберите время');
+    return res;
+  },
+  phone: (value) => {
+    const res = [];
+    if (!value || value.length === 0)
+      res.push('Пожалуйста, введите телефон');
+    else if (!/(?:\+|\d)[\d\-\(\) ]{9,}\d/.test(value))
+      res.push('Пожалуйста, введите корректный телефон, иначе наши специалисты не смогут связаться с вами');
+    return res;
+  },
+  name: (value) => {
+    const res = [];
+    if (!value || value.length === 0)
+      res.push('Пожалуйста, укажите имя');
+    return res;
+  }
 };
 
 const defaultState = {
