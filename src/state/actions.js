@@ -1,5 +1,7 @@
 import fetch from 'cross-fetch';
 
+const generateUniqueId = () => Math.random().toString(36).substr(2, 32);
+
 export const CHANGE_CITY = 'CHANGE_CITY';
 export const changeCity = (city) => ({
   type: CHANGE_CITY,
@@ -70,4 +72,55 @@ export const fetchTimetableIfNeeded = (city) => (dispatch, getState) => {
   const timetable = getState().timetable.items[city];
   if (timetable) return Promise.resolve();
   return dispatch(fetchTimetable(city));
+};
+
+export const SET_ORDERS = 'SET_ORDERS';
+export const setOrders = (orders) => ({
+  type: SET_ORDERS,
+  orders
+});
+
+export const SEND_ORDER = 'SEND_ORDER';
+export const sendOrder = () => ({
+  type: SEND_ORDER,
+});
+
+export const ADD_ORDER = 'ADD_ORDER';
+export const addOrder = (data) => ({
+  type: ADD_ORDER,
+  ...data,
+});
+
+export const REMOVE_ORDER = 'REMOVE_ORDER';
+export const removeOrder = (id) => ({
+  type: REMOVE_ORDER,
+  id: id,
+});
+
+const localStorage = window.localStorage;
+
+export const putOrder = (data) => (dispatch, getState) => {
+  const order = {
+    id: generateUniqueId(),
+    ...data
+  };
+
+  dispatch(sendOrder());
+  return new Promise((resolve) => {
+    const id = setTimeout(() => {
+      clearTimeout(id);
+
+      dispatch(addOrder(order));
+      const orders = getState().orders.items;
+
+      localStorage.setItem('orders', JSON.stringify(orders));
+      resolve();
+    }, 700)
+  })
+};
+
+export const deleteOrder = (id) => (dispatch, getState) => {
+  dispatch(removeOrder(id));
+  const orders = getState().orders.items;
+  localStorage.setItem('orders', JSON.stringify(orders));
 };

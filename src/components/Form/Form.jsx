@@ -47,32 +47,33 @@ const formatDate = (dateString) => {
   return `${dayStr} ${monthStr}, ${weekdayStr}`;
 };
 
-class Form extends Component {
-  state = {
-    date: null,
-    time: null,
-    phone: '',
-    value: '',
-    name: '',
-    validation: {
-      date: {
-        touched: false,
-        errors: [],
-      },
-      time: {
-        touched: false,
-        errors: [],
-      },
-      phone: {
-        touched: false,
-        errors: [],
-      },
-      name: {
-        touched: false,
-        errors: [],
-      },
+const defaultState = {
+  date: null,
+  time: null,
+  phone: '',
+  name: '',
+  validation: {
+    date: {
+      touched: false,
+      errors: [],
     },
-  };
+    time: {
+      touched: false,
+      errors: [],
+    },
+    phone: {
+      touched: false,
+      errors: [],
+    },
+    name: {
+      touched: false,
+      errors: [],
+    },
+  },
+};
+
+class Form extends Component {
+  state = defaultState;
 
   updateField = (field, value) => {
     this.setState({
@@ -103,6 +104,20 @@ class Form extends Component {
       .reduce((acc, el) => acc || el)
   };
 
+  updateCity = (value) => {
+    this.updateDate(null);
+    this.props.onCityChange(value);
+    this.setState({
+      validation: {
+        ...this.state.validation,
+        date: {
+          touched: false,
+          errors: [],
+        }
+      }
+    })
+  };
+
   updateDate = (value) => {
     this.setState({
       date: value,
@@ -118,8 +133,22 @@ class Form extends Component {
     this.validate('time', value);
   };
 
+  clearForm = () => {
+    this.setState(defaultState)
+  };
+
+  sendOrder = () => {
+    const { validation, date, ...data } = this.state;
+    const city = this.props.cities.find((c) => c.id === this.props.city);
+    this.props.onOrder({
+      city: city.name,
+      address: city.address,
+      ...data,
+    }).then(() => this.clearForm());
+  };
+
   render() {
-    const { cities, city, onCityChange, timetable, areCitiesFetching } = this.props;
+    const { cities, city, timetable, areCitiesFetching, disabled } = this.props;
     const cityInfo = cities.find((c) => c.id === city);
     const times = ((timetable.find((day) => day.date === this.state.date) || {}).times || [])
       .map(({ date, begin, end }) => ({ value: date, label: `${begin}-${end}`}));
@@ -127,13 +156,12 @@ class Form extends Component {
     return (
       <div className="Form-root">
         <h3>Онлайн запись</h3>
-        <div className="Form-inputs-wrapper">
+        <div className={cx("Form-inputs-wrapper", { disabled })}>
           <Dropdown
             placeholder="Город"
-            headerClass="Form-city"
             options={cities.map(city => ({ value: city.id, label: city.name }))}
             value={city}
-            onChange={onCityChange}
+            onChange={this.updateCity}
             disabled={areCitiesFetching}
           />
           { city && <CityInfo {...cityInfo} /> }
@@ -202,7 +230,12 @@ class Form extends Component {
             </p>
           )}
           <div className="Form-button">
-            <button disabled={this.isFormInvalid()}>Записаться</button>
+            <button
+              onClick={() => this.sendOrder()}
+              disabled={this.isFormInvalid()}
+            >
+              Записаться
+            </button>
           </div>
           <p className="Form-agreement">
             Нажимая "Записаться", я выражаю свое согласие с обработкой
