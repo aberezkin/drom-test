@@ -9,10 +9,8 @@
 .App-container {
   margin: 24px 0;
   padding: 16px 24px;
-  border: 1px solid darkgray;
   min-height: 100px;
 }
-
 
 .App-loader-wrapper {
   height: 39px;
